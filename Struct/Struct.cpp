@@ -433,68 +433,152 @@
 //}
 
 //14.18 - 6
-#define NAMELEN 12
-#define ROSTERSIZE 19
-struct Player {
-	char fname[10];
-	char lname[10];
-	unsigned int abats;
-	unsigned int hits;
-	unsigned int walks;
-	unsigned int rbis;
-	float batgaverage;	
-};
-void getBattingAverage(struct Player *pp);
-void showPlayers(struct Player *pp,int size);
+//#define NAMELEN 12
+//#define ROSTERSIZE 19
+//struct Player {
+//	char fname[NAMELEN];
+//	char lname[NAMELEN];
+//	unsigned int abats;
+//	unsigned int hits;
+//	unsigned int walks;
+//	unsigned int rbis;
+//	float batgaverage;	
+//};
+//void getBattingAverage(struct Player *pp);
+//void showPlayers(struct Player *pp,int size);
+//
+//int main(int argc,char *argv[]) {
+//	FILE *fp;
+//	int number = 0;
+//	char first[NAMELEN];
+//	char last[NAMELEN];
+//	unsigned int abats;
+//	unsigned int hits;
+//	unsigned int walks;
+//	unsigned int rbis;
+//	//declare and init struct
+//	struct Player players[ROSTERSIZE];
+//	for (int i = 0; i < ROSTERSIZE; i++)
+//		players[i] = { "", "", 0, 0, 0, 0, 0 };
+//
+//	if ((fp = fopen(argv[1], "r")) == NULL){
+//		printf("Can't open the file \n");
+//		exit(1);
+//	}
+//	
+//	while (fscanf(fp, "%d %s %s %u %u %u %u", &number, first, last, &abats, &hits, &walks, &rbis) == 7) {
+//		if (players[number].fname[0] == '\0') {
+//			strcpy(players[number].fname,first);
+//			strcpy(players[number].lname,last);
+//		}
+//		players[number].abats += abats;
+//		players[number].hits += hits;
+//		players[number].walks += walks;
+//		players[number].rbis += rbis;
+//	}
+//
+//	//calculate batting average
+//	for (int i = 0; i < ROSTERSIZE; i++) {
+//		getBattingAverage(&players[i]);
+//	}
+//
+//	//show info
+//	showPlayers(players,ROSTERSIZE);
+//	if (fclose(fp) != 0) {
+//		printf("Error in closing files\n");
+//	}
+//	return 0;
+//}
+//
+//void showPlayers(struct Player *pp,int size) {
+//	unsigned int atbats = 0;
+//	unsigned int hits = 0;
+//	unsigned int walks = 0;
+//	unsigned int rbis = 0;
+//	unsigned int avagbatting = 0;
+//	printf("Team statistics \n [number] [first name] [last name] [abats] [hits] [walks] [rbis] [batting avageer] \n");
+//	for (int i = 0; i < size; i++,pp++) {
+//		if (pp->fname[0] != '\0') {
+//			printf(" %2d %15s %10s %6u %6u %8u %8u %10.3f \n", i, pp->fname, pp->lname, pp->abats, pp->hits, pp->walks, pp->rbis, pp->batgaverage);
+//
+//			atbats += pp->abats;
+//			hits += pp->hits;
+//			walks += pp->walks;
+//			rbis += pp->rbis;
+//			avagbatting += hits / (float)atbats;
+//		}
+//	}
+//	printf("Combined status:\n %36u %6u %8u %8u %10.3f \n", atbats, hits, walks, rbis, hits / (float)atbats);
+//}
+//void getBattingAverage(struct Player *pp) {
+//	pp->batgaverage =  pp->hits / (float)pp->abats;
+//}
 
-int main(int argc,char *argv[]) {
-	FILE *fp;
-	int number = 0;
-	char first[NAMELEN];
-	char last[NAMELEN];
-	unsigned int abats;
-	unsigned int hits;
-	unsigned int walks;
-	unsigned int rbis;
-	struct Player players[ROSTERSIZE];
-	if ((fp = fopen(argv[1], "r")) == NULL){
-		printf("Can't open the file \n");
+//14.18 - 7
+#define MAXTITL 40
+#define MAXAUTL 40
+#define MAXBKS 10
+struct book {
+	char title[MAXTITL];
+	char author[MAXAUTL];
+	float value;
+};
+
+int main() {
+	struct book library[MAXBKS];
+	int count = 0;
+	int index, filecount;
+	FILE * pbooks;
+	int size = sizeof(struct book);
+	
+	if ((pbooks = fopen("book.dat", "a+b")) == NULL) {
+		fputs("Can't open book.dat file\n", stderr);
 		exit(1);
 	}
-	
-	while (fscanf(fp, "%d %s %s %u %u %u %u", &number, first, last, &abats, &hits, &walks, &rbis) == 7) {
-		if (players[number].fname[0] != '\0') {
-			strcpy(players[number].fname,first);
-			strcpy(players[number].lname, last);
+
+	rewind(pbooks);
+	while (count < MAXBKS && fread(&library[count], size, 1, pbooks) == 1) {
+		if (count == 0) {
+			puts("Current contents of book.dat: ");
 		}
-		players[number].abats += abats;
-		players[number].hits += hits;
-		players[number].walks += walks;
-		players[number].rbis += rbis;
+		printf("%s by %s: $%.2f\n", library[count].title, library[count].author, library[count].value);
+		count++;
+	}
+	filecount = count;
+	if (count == MAXBKS) {
+		fputs("The book.dat file is full.", stderr);
+		exit(2);
 	}
 
-	//calculate batting average
-	for (int i = 0; i < ROSTERSIZE; i++) {
-		getBattingAverage(&players[i]);
+	puts("Please add new book titles.");
+	puts("Press [enter] at the start of aline to stop.");
+	while (count < MAXBKS && gets_s(library[count].title) != NULL && library[count].title[0] != '\0') {
+		puts("Now enter the author.");
+		gets_s(library[count].author);
+		puts("Now enter the value.");
+		scanf("%f", &library[count++].value);
+		while (getchar() != '\n') {
+			continue;
+		}
+		if (count < MAXBKS) {
+			puts("Enter the next title.");
+		}
 	}
 
-	//show info
-	showPlayers(players,ROSTERSIZE);
-	if (fclose(fp) != 0) {
-		printf("Error in closing files\n");
+	if (count > 0) {
+		puts("Here is the list of your books:");
+		for (index = 0; index < count; index++) {
+			printf("%s by %s: $%.2f\n", library[index].title, library[index].author, library[index].value);
+
+		}
+		fwrite(&library[filecount], size, count - filecount, pbooks);
 	}
+	else {
+		puts("No books? Too bad.\n");
+	}
+	puts("Bye.\n");
+	fclose(pbooks);
 	return 0;
-}
-
-void showPlayers(struct Player *pp,int size) {
-	unsigned int atbats = 0;
-	unsigned int hits = 0;
-	unsigned int walks = 0;
-	unsigned int rbis = 0;
-	printf("Team statistics \n")
-}
-void getBattingAverage(struct Player *pp) {
-	pp->batgaverage =  pp->hits / (float)pp->abats;
 }
 Struct::Struct()
 {
