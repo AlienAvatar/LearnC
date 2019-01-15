@@ -38,6 +38,7 @@
 //4.8 - 2 
 //int main() {
 //	char name[20];
+//	printf("Please enter a name\n");
 //	scanf("%s", name);
 //	//a
 //	//printf("\"%s\"", name);
@@ -55,9 +56,10 @@
 //4.8 - 3
 //int main() {
 //	float inputFloat;
+//	printf("Please enter a float\n");
 //	scanf("%f", &inputFloat);
-//	//printf("The input is %.1f or %0.1e", inputFloat,inputFloat);
-//	printf("THe input is %+.3f or %.3E", inputFloat,inputFloat);
+//	printf("The input is %.1f or %.1e", inputFloat,inputFloat);
+//	//printf("THe input is %+.3f or %.3E", inputFloat,inputFloat);
 //	return 0;
 //}
 
@@ -82,17 +84,39 @@
 //	scanf("%s", lastname);
 //	printf("Please input your firstname\n");
 //	scanf("%s", firstname);
-//	printf("%s %s\n", lastname, firstname);
 //	int len1 = strlen(lastname);
 //	int len2 = strlen(firstname);
-//	/*printf("%*d", len1,len1);
-//	printf("%*d", len2+1,len2);*/
-//	printf("%-*d", len1, len1);
-//	printf("%-*d", len2+1, len2);
+//	printf("%s %s\n", lastname, firstname);
+//	printf("%*d %*d\n", len1, strlen(lastname), len2,strlen(firstname));
+//	printf("%s %s\n", lastname, firstname);
+//	printf("%-*d %-*d\n", len1, strlen(lastname), len2 + 1, strlen(firstname));
 //	return 0;
 //}
 
-//4.9 - 6
+//update
+//int main(void)
+//{
+//	char first_name[20];
+//	char last_name[20];
+//
+//	printf("Enter your first and last name: ");
+//	scanf("%s %s", first_name, last_name);
+//	printf("\n");
+//	printf("%s %s\n", first_name, last_name);
+//	printf("%*lu %*lu\n", // right justified
+//		(int)strlen(first_name), strlen(first_name),
+//		(int)strlen(last_name), strlen(last_name));
+//	printf("\n");
+//	printf("%s %s\n", first_name, last_name);
+//	printf("%-*lu %-*lu\n", // left justified
+//		(int)strlen(first_name), strlen(first_name),
+//		(int)strlen(last_name), strlen(last_name));
+//	printf("\n");
+//
+//	return 0;
+//}
+
+//4.9 - 6 X
 //int main() {
 //	double d = 1.0 / 3.0;
 //	float  f = 1.0 / 3.0f;
@@ -103,6 +127,26 @@
 //	return 0;
 //}
 
+//update 
+//int main(void)
+//{
+//	double db_one_third = 1.0 / 3.0;
+//	float ft_one_third = 1.0 / 3.0;
+//
+//	printf("Float                Double              \n");
+//	printf("-------------------- --------------------\n");
+//	printf("%-20.4f %-20.4f\n", ft_one_third, db_one_third); // show 4 digits
+//	printf("%-20.12f %-20.12f\n", ft_one_third, db_one_third); // show 12 digits
+//	printf("%-20.16f %-20.16f\n", ft_one_third, db_one_third);
+//	printf("\n");
+//	printf("FLT_DIG: %d\n", FLT_DIG);
+//	printf("DBL_DIG: %d\n", DBL_DIG);
+//
+//	/* results: both float and double are accurate to at least the amount of sig
+//	figs specified by FLT_DIG and DBL_DIG */
+//
+//	return 0;
+//}
 //4.9 - 7
 //int main() {
 //	int gallon;
@@ -110,16 +154,36 @@
 //	printf("Please input your gallon and miles\n");
 //	scanf("%d", &gallon);
 //	scanf("%f", &mile);
-//	//float consume = gallon / mile;//每消耗一加仑走多少英里
-//	const float litre = gallon * 3.785;
-//	const float kilometer = mile * 1.609;
-//    float consume2 = litre / kilometer;//每消耗3.785升，走多少公里
-//	float result = 100 / consume2;
-//	printf("%.1f(L)", result);
+//	float per_gallon_mile = mile / gallon;//每消耗一加仑走多少英里
+//	printf("per gallon miles %f \n", per_gallon_mile);
+//    //每100公里，消耗多少汽油
+//
+//	float perkm = 100 / ((1.609*mile)/(gallon*3.785));
+//	printf("%.1f(L)", perkm);
 //	return 0;
 //}
 
-
+//int main(void)
+//{
+//	const float KM_PER_MILE = 1.609;
+//	const float LT_PER_GALLON = 3.785;
+//	float miles_travelled, gallons_gas_consumed;
+//	float miles_per_gallon, liters_per_100km;
+//
+//	printf("Enter your distance travelled in miles: ");
+//	scanf("%f", &miles_travelled);
+//	printf("Enter the amount of gas consumed in gallons: ");
+//	scanf("%f", &gallons_gas_consumed);
+//
+//	// calculate miles per gallon and liters per km
+//	miles_per_gallon = miles_travelled / gallons_gas_consumed;
+//	liters_per_100km = 100. / miles_per_gallon * LT_PER_GALLON / KM_PER_MILE;
+//
+//	printf("Miles per gallon: %.1f\n", miles_per_gallon);
+//	printf("Liters per 100 kilometers: %.1f\n", liters_per_100km);
+//
+//	return 0;
+//}
 StringAndFormattingIO::StringAndFormattingIO()
 {
 }
